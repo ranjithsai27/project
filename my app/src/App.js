@@ -7,6 +7,9 @@ import React, { Component, usestate } from "react";
 // import faker from "faker";
 // import Aproval from "./Components/aproval/Aproval";
 
+import Loader from "./Components/loader/Loader";
+import Wheather from "./Components/wheather/Wheather";
+
 
 
 class App extends Component {
@@ -19,7 +22,8 @@ class App extends Component {
           lat: null,
           long: null
         }
-      ]
+      ],
+      errorMsg : ''
     };
 
     window.navigator.geolocation.getCurrentPosition(position => {
@@ -40,22 +44,32 @@ class App extends Component {
       }
     )
   }
+
+  componentWillUpdate(){
+    console.log("Component did update called");
+    console.log("Component with geolocation");
+  }
   render() {
+    console.log("Component rerendered");
     if (!this.state.errorMsg && this.state.pos.lat) {
       return (
-        <div className="App">
-          hello your coords are <br></br>
-          {console.log(this.State)}
-        latitude:{this.state.pos.lat},
-        longitude:{this.state.pos.long}
-        </div>
+      
+         <Wheather lat={this.state.pos.lat}/>
+
+        
+        // <div className="App">
+        //   hello your coords are
+        //   {console.log(this.State)}<br/><br/>
+        // latitude:{this.state.pos.lat},<br/><br/>
+        // longitude:{this.state.pos.long}
+        // </div>
       );
     }
     if (this.state.errorMsg && !this.state.pos.lat) {
       return <div>error:{this.state.errorMsg}</div>;
     }
 
-    return <div>loading.....</div>
+    return <Loader/>;
 
   }
 
